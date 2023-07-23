@@ -43,6 +43,9 @@ go.work
 .idea/**/dbnavigator.xml
 
 .idea
+.idea/*
+bin
+bin/*
 
 # CMake
 cmake-build-*/
