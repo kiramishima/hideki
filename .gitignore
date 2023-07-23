@@ -46,6 +46,9 @@ go.work
 .idea/*
 bin
 bin/*
+.idea/vcs.xml
+.idea/modules.xml
+.idea/*.iml
 
 # CMake
 cmake-build-*/
