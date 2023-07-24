@@ -1,13 +1,14 @@
 package services
 
 import (
+	"go.uber.org/zap"
 	"hideki/internal/database/repositories"
 
 	"go.uber.org/fx"
 )
 
-var ServicesModule = fx.Module("services",
-	fx.Provide(func(authrepo *repositories.AuthRepository) *AuthService {
-		return NewAuthService(authrepo)
+var Module = fx.Module("services",
+	fx.Provide(func(logger *zap.SugaredLogger, authrepo *repositories.AuthRepository) *AuthService {
+		return NewAuthService(logger, authrepo)
 	}),
 )

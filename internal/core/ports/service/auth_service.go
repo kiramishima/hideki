@@ -6,5 +6,5 @@ import (
 )
 
 type AuthService interface {
-	Login(ctx context.Context, data *domain.AuthRequest) (*domain.User, error)
+	Login(ctx context.Context, data *domain.AuthRequest) (*domain.AuthResponse, error)
 }

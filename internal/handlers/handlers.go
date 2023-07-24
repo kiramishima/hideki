@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-var HandlersModule = fx.Module("handlers",
+var Module = fx.Module("handlers",
 	fx.Invoke(func(r *chi.Mux, logger *zap.SugaredLogger, svc *services.AuthService) {
 		NewAuthHandlers(r, logger, svc)
 	}),

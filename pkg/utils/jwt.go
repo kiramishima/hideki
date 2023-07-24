@@ -1,4 +1,4 @@
-package util
+package utils
 
 import (
 	"errors"
@@ -15,10 +15,8 @@ import (
 var privateKey = []byte(os.Getenv("JWT_PRIVATE_KEY"))
 
 // GenerateJWT generate JWT token
-func GenerateJWT(user domain.User) (string, error) {
+func GenerateJWT(user *domain.User) (string, error) {
 	tokenTTL, _ := strconv.Atoi(os.Getenv("TOKEN_TTL"))
-	//log.Println(time.Now())
-	//log.Println(time.Now().Add(time.Second * time.Duration(tokenTTL)))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":   user.ID,
 		"role": user.RoleID,

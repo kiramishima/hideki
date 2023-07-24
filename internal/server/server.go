@@ -20,8 +20,8 @@ func NewServer(addr string, r *chi.Mux) *http.Server {
 	}
 }
 
-// Module
-var ServerModule = fx.Module("server",
+// Module Server Module
+var Module = fx.Module("server",
 	fx.Provide(func(cfg *config.Configuration, r *chi.Mux) *http.Server {
 		var addr = fmt.Sprintf("%s:%d", cfg.ServerAddress, cfg.Port)
 		return NewServer(addr, r)

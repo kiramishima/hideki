@@ -19,7 +19,19 @@ func NewAuthRepository(conn *sql.DB) *AuthRepository {
 
 // Login Repository method for sign in
 func (repo *AuthRepository) Login(ctx context.Context, data *domain.AuthRequest) (*domain.User, error) {
-	stmt, err := repo.db.PrepareContext(ctx, "SELECT id, email, password, created_at, updated_at FROM users WHERE email = $1")
+	var query = `SELECT id,
+		   email,
+		   password,
+		   (SELECT id
+			FROM roles
+					 INNER JOIN public.model_has_roles mhr on roles.id = mhr.role_id
+			WHERE mhr.model_id = u.id
+			LIMIT 1) role_id,
+		   created_at,
+		   updated_at
+	FROM users u
+	WHERE email = $1`
+	stmt, err := repo.db.PrepareContext(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", ErrPrepareStatement, err)
 	}
@@ -29,7 +41,7 @@ func (repo *AuthRepository) Login(ctx context.Context, data *domain.AuthRequest)
 
 	row := stmt.QueryRowContext(ctx, data.Email)
 	var updatedAt sql.NullTime
-	err = row.Scan(&u.ID, &u.Email, &u.Password, &u.CreatedAt, &updatedAt)
+	err = row.Scan(&u.ID, &u.Email, &u.Password, &u.RoleID, &u.CreatedAt, &updatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, ErrUserNotFound

@@ -26,7 +26,7 @@ func TestSignInHandler(t *testing.T) {
 			ID: 1,
 			buildStubs: func(uc *mock.MockAuthService) {
 				uc.EXPECT().
-					Login(gomock.Any(), gomock.Eq("gini@mail.com"), gomock.Eq("123456")).
+					Login(gomock.Any(), &domain.AuthRequest{Email: "gini@mail.com", Password: "123456"}).
 					Times(1).
 					Return(&domain.User{}, nil)
 			},
@@ -82,7 +82,7 @@ func TestSignInHandler(t *testing.T) {
 			recorder := httptest.NewRecorder()
 
 			url := "/v1/auth/sign-in"
-			teacher := domain.UserFormRequest{
+			teacher := domain.AuthRequest{
 				Email:    "gini@mail.com",
 				Password: "123456",
 			}

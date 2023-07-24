@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
+	"go.uber.org/zap"
 	"hideki/internal/core/domain"
 	mock "hideki/internal/mocks"
 	"testing"
@@ -11,6 +12,8 @@ import (
 )
 
 func TestLogin(t *testing.T) {
+	logger, _ := zap.NewProduction()
+	slogger := logger.Sugar()
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 	repo := mock.NewMockAuthRepository(mockCtrl)
@@ -23,7 +26,7 @@ func TestLogin(t *testing.T) {
 		UpdatedAt: time.Time{},
 	}, nil)
 
-	uc := NewAuthService(repo)
+	uc := NewAuthService(slogger, repo)
 
 	t.Run("OK", func(t *testing.T) {
 		ctx := context.Background()
@@ -31,7 +34,7 @@ func TestLogin(t *testing.T) {
 		b, err := uc.Login(ctx, data)
 		t.Log("B", b)
 		assert.NoError(t, err)
-		assert.Equal(t, "gini@mail.com", b.Email)
+		assert.Equal(t, "gini@mail.com", b.Token)
 	})
 	t.Run("Not Found", func(t *testing.T) {
 		ctx := context.Background()
