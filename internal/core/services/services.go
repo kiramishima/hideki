@@ -11,4 +11,7 @@ var Module = fx.Module("services",
 	fx.Provide(func(logger *zap.SugaredLogger, authrepo *repositories.AuthRepository) *AuthService {
 		return NewAuthService(logger, authrepo)
 	}),
+	fx.Provide(func(logger *zap.SugaredLogger, usrrepo *repositories.UserRepository) *UserService {
+		return NewUserService(logger, usrrepo)
+	}),
 )

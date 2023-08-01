@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"github.com/unrolled/render"
 	"hideki/internal/core/domain"
 	ports "hideki/internal/core/ports/service"
 	httpErrors "hideki/pkg/errors"
@@ -12,10 +13,11 @@ import (
 )
 
 // NewAuthHandlers creates a instance of auth handlers
-func NewAuthHandlers(r *chi.Mux, logger *zap.SugaredLogger, s ports.AuthService) {
+func NewAuthHandlers(r *chi.Mux, logger *zap.SugaredLogger, s ports.AuthService, render *render.Render) {
 	handler := &AuthHandlers{
-		logger:  logger,
-		service: s,
+		logger:   logger,
+		service:  s,
+		response: render,
 	}
 
 	r.Route("/v1/auth", func(r chi.Router) {
@@ -24,8 +26,9 @@ func NewAuthHandlers(r *chi.Mux, logger *zap.SugaredLogger, s ports.AuthService)
 }
 
 type AuthHandlers struct {
-	logger  *zap.SugaredLogger
-	service ports.AuthService
+	logger   *zap.SugaredLogger
+	service  ports.AuthService
+	response *render.Render
 }
 
 func (h *AuthHandlers) SignInHandler(w http.ResponseWriter, req *http.Request) {
@@ -57,10 +60,11 @@ func (h *AuthHandlers) SignInHandler(w http.ResponseWriter, req *http.Request) {
 		}
 		return
 	}
-
-	if err := writeJSON(w, http.StatusAccepted, resp, nil); err != nil {
+	// writeJSON(w, http.StatusAccepted, resp, nil); err != nil
+	if err := h.response.JSON(w, http.StatusAccepted, resp); err != nil {
 		h.logger.Error(err.Error())
-		http.Error(w, "Error", http.StatusInternalServerError)
+		_ = h.response.JSON(w, http.StatusInternalServerError, map[string]string{"error": httpErrors.InternalServerError.Error()})
+		// http.Error(w, "Error", http.StatusInternalServerError)
 		return
 	}
 }

@@ -3,14 +3,18 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"hideki/internal/core/domain"
+	dbErrors "hideki/pkg/errors"
 )
 
+// AuthRepository struct
 type AuthRepository struct {
 	db *sql.DB
 }
 
+// NewAuthRepository Creates a new instance of AuthRepository
 func NewAuthRepository(conn *sql.DB) *AuthRepository {
 	return &AuthRepository{
 		db: conn,
@@ -33,7 +37,7 @@ func (repo *AuthRepository) Login(ctx context.Context, data *domain.AuthRequest)
 	WHERE email = $1`
 	stmt, err := repo.db.PrepareContext(ctx, query)
 	if err != nil {
-		return nil, fmt.Errorf("%s: %w", ErrPrepareStatement, err)
+		return nil, fmt.Errorf("%s: %w", dbErrors.ErrPrepareStatement, err)
 	}
 	defer stmt.Close()
 
@@ -43,10 +47,10 @@ func (repo *AuthRepository) Login(ctx context.Context, data *domain.AuthRequest)
 	var updatedAt sql.NullTime
 	err = row.Scan(&u.ID, &u.Email, &u.Password, &u.RoleID, &u.CreatedAt, &updatedAt)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, ErrUserNotFound
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, dbErrors.ErrUserNotFound
 		} else {
-			return nil, fmt.Errorf("%s: %w", ErrScanData, err)
+			return nil, fmt.Errorf("%s: %w", dbErrors.ErrScanData, err)
 		}
 	}
 

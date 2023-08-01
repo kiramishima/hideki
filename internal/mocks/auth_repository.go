@@ -7,7 +7,7 @@ package mocks
 import (
 	context "context"
 	domain "hideki/internal/core/domain"
-	"hideki/internal/database/repositories"
+	httpErrors "hideki/pkg/errors"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -46,7 +46,7 @@ func (m *MockAuthRepository) Login(ctx context.Context, data *domain.AuthRequest
 	if ret0.Email == data.Email {
 		return ret0, nil
 	} else {
-		return nil, repositories.ErrUserNotFound
+		return nil, httpErrors.ErrUserNotFound
 	}
 }
 

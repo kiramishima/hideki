@@ -44,6 +44,11 @@ Se sigue la arquitectura hexagonal con clean architecture :-D
 
 ## TODO
 
-- Integrar JWT
+- Integrar SQLX con PGX
+- Cambiar en Database/repositories a Adapter/Database/PostgreSQL/repositories
+  -  Agregar un Adapter/Database/MongoDB/repositories
+  -  Agregar un Adapter/Database/Neo4J/repositories
+- Integrar Redis o Elasticsearch
+- Agregar Prometheus pa' las metricas.
 - Ir a comer un ramen con los amigos(as)
 - Pasar mi certificación de AWS, Azure y Snowflake.

@@ -16,8 +16,12 @@ var DatabaseModule = fx.Module("db",
 	fx.Provide(func(conn *sql.DB) *AuthRepository {
 		return NewAuthRepository(conn)
 	}),
+	fx.Provide(func(conn *sql.DB) *UserRepository {
+		return NewUserRepository(conn)
+	}),
 )
 
+// NewDatabase creates an instance of DB
 func NewDatabase(lc fx.Lifecycle, cfg *config.Configuration, logger *zap.SugaredLogger) (*sql.DB, error) {
 
 	db, err := sql.Open("postgres", cfg.DatabaseURL)

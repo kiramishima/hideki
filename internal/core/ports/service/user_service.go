@@ -6,5 +6,5 @@ import (
 )
 
 type UserService interface {
-	GetProfile(ctx context.Context, uid int16) (*domain.User, error)
+	GetProfile(ctx context.Context, uid int16) (*domain.UserProfile, error)
 }
