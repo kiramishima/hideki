@@ -13,12 +13,14 @@ pero desde 2021 no han lanzado una versión nueva y pues Go ha cambiado.
 - Zap
 - pq
 - envconfig
-- go-sqlmock
 - testify
+- SQLX
+- PGX
+- Validator
 
 ## Estructura
 
-Se sigue la arquitectura hexagonal con clean architecture :-D
+Se sigue la arquitectura hexagonal con clean architecture, pero puede ir cambiando conforme avance en el repositorio,
 
 - cmd
 - bootstrap
@@ -37,6 +39,10 @@ Se sigue la arquitectura hexagonal con clean architecture :-D
     - handlers
     - mocks
     - server
+
+La idea es aplicar algo como expuso Valentina Cupac en una platica
+
+<img width="750" src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe5f9ca77-0fc5-4fd4-8b89-c2e43ffff9c2_3601x4442.jpeg">
 
 ## Version de Go
 
