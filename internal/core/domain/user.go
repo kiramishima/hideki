@@ -7,13 +7,13 @@ import (
 )
 
 type User struct {
-	ID        string    `json:"id" db:"id"`
-	Email     string    `json:"email" db:"email"`
-	UserName  string    `json:"username,omitempty,string" db:"username,omitempty,string"`
-	RoleID    string    `json:"-" db:"role_id,omitempty,string"`
-	Password  string    `json:"-" db:"password"`
-	CreatedAt time.Time `json:"-" db:"created_at"`
-	UpdatedAt time.Time `json:"-" db:"updated_at"`
+	ID        string    `json:"id" db:"id" bson:"_id,omitempty"`
+	Email     string    `json:"email" db:"email" bson:"email"`
+	UserName  string    `json:"username,omitempty,string" db:"username,omitempty,string" bson:"username,omitempty,string"`
+	RoleID    string    `json:"-" db:"role_id,omitempty,string" bson:"role_id,omitempty,string"`
+	Password  string    `json:"-" db:"password" bson:"password"`
+	CreatedAt time.Time `json:"-" db:"created_at" bson:"created_at"`
+	UpdatedAt time.Time `json:"-" db:"updated_at" bson:"updated_at"`
 }
 
 // NewUser crea un nuevo usuario

@@ -34,8 +34,12 @@ Se sigue la arquitectura hexagonal con clean architecture, pero puede ir cambian
         - service
         - handler
       - services
-    - database
-      - repositories
+    - adapters
+      - database
+        - postgresql
+          - repository
+        - mongodb
+            - repository
     - handlers
     - mocks
     - server
@@ -51,10 +55,8 @@ La idea es aplicar algo como expuso Valentina Cupac en una platica
 ## TODO
 
 - Integrar SQLX con PGX
-- Cambiar en Database/repositories a Adapter/Database/PostgreSQL/repositories
-  -  Agregar un Adapter/Database/MongoDB/repositories
-  -  Agregar un Adapter/Database/Neo4J/repositories
 - Integrar Redis o Elasticsearch
-- Agregar Prometheus pa' las metricas.
+- Agregar Prometheus o OpenTelemetry pa' las metricas.
 - Ir a comer un ramen con los amigos(as)
 - Pasar mi certificación de AWS, Azure y Snowflake.
+- Agregar el video de la platica de Ms. Valentina

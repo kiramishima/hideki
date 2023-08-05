@@ -7,8 +7,8 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/unrolled/render"
 	"hideki/config"
+	"hideki/internal/adapters/database/postgresql/repository"
 	"hideki/internal/core/services"
-	"hideki/internal/database/repositories"
 	"hideki/internal/handlers"
 	"hideki/internal/server"
 	"net/http"
@@ -81,7 +81,7 @@ var Module = fx.Options(
 		return render.New()
 	}),
 	server.Module,
-	repositories.DatabaseModule,
+	repository.DatabaseModule,
 	services.Module,
 	handlers.Module,
 	fx.Invoke(bootstrap),
