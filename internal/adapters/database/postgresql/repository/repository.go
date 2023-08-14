@@ -2,29 +2,30 @@ package repository
 
 import (
 	"context"
-	"database/sql"
+	"github.com/jmoiron/sqlx"
 	"hideki/config"
 	"time"
 
-	_ "github.com/lib/pq"
+	// _ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
 
 var DatabaseModule = fx.Module("db",
 	fx.Provide(NewDatabase),
-	fx.Provide(func(conn *sql.DB) *AuthRepository {
+	fx.Provide(func(conn *sqlx.DB) *AuthRepository {
 		return NewAuthRepository(conn)
 	}),
-	fx.Provide(func(conn *sql.DB) *UserRepository {
+	fx.Provide(func(conn *sqlx.DB) *UserRepository {
 		return NewUserRepository(conn)
 	}),
 )
 
 // NewDatabase creates an instance of DB
-func NewDatabase(lc fx.Lifecycle, cfg *config.Configuration, logger *zap.SugaredLogger) (*sql.DB, error) {
+func NewDatabase(lc fx.Lifecycle, cfg *config.Configuration, logger *zap.SugaredLogger) (*sqlx.DB, error) {
 
-	db, err := sql.Open("postgres", cfg.DatabaseURL)
+	db, err := sqlx.Connect(cfg.DatabaseDriver, cfg.DatabaseURL)
 	if err != nil {
 		return nil, err
 	}

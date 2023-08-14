@@ -7,6 +7,7 @@ env:
   API_NAME: hideki
   MODE: Development
   # Database
+  DATABASE_DRIVER: pgx
   DATABASE_URL: postgresql://postgres:123456@192.168.100.47/pollos_hermanos
   DATABASE_MAX_OPEN_CONNECTIONS: 25
   DATABASE_MAX_IDDLE_CONNECTIONS: 25
@@ -31,6 +32,12 @@ tasks:
   build:
     cmds:
       - env CGO_ENABLED=0 GOOS=linux go build -ldflags '-w -s' -a -installsuffix cgo -o bin/$API_NAME ./cmd/main.go
+
+  test:
+    desc: Run all tests ignoring cache
+    cmds:
+      - go test -cover -v ./... -count=1
+
 
   run_local:
     cmds:

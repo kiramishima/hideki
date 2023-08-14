@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"github.com/jmoiron/sqlx"
 	"hideki/internal/core/domain"
 	"testing"
 	"time"
@@ -12,12 +13,13 @@ import (
 )
 
 func TestLogin(t *testing.T) {
-	db, mock, err := sqlmock.New()
+	db, mock, err := sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual))
 	assert.NoError(t, err)
 	defer db.Close()
-	ctx := context.Background()
+	sqlxDB := sqlx.NewDb(db, "sqlmock")
 
-	repo := NewAuthRepository(db)
+	ctx := context.Background()
+	repo := NewAuthRepository(sqlxDB)
 
 	user := &domain.User{
 		ID:        "1",

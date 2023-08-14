@@ -16,7 +16,7 @@ var Module = fx.Module("handlers",
 	fx.Invoke(func(r *chi.Mux, logger *zap.SugaredLogger, svc *services.UserService, render *render.Render) {
 		NewUserHandlers(r, logger, svc, render)
 	}),
-	fx.Invoke(func(logger *zap.SugaredLogger, r *chi.Mux) {
-		NewHealthHandlers(logger, r)
+	fx.Invoke(func(logger *zap.SugaredLogger, r *chi.Mux, render *render.Render) {
+		NewHealthHandlers(logger, r, render)
 	}),
 )

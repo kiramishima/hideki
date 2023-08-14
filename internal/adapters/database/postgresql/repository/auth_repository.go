@@ -5,17 +5,18 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/jmoiron/sqlx"
 	"hideki/internal/core/domain"
 	dbErrors "hideki/pkg/errors"
 )
 
 // AuthRepository struct
 type AuthRepository struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
 // NewAuthRepository Creates a new instance of AuthRepository
-func NewAuthRepository(conn *sql.DB) *AuthRepository {
+func NewAuthRepository(conn *sqlx.DB) *AuthRepository {
 	return &AuthRepository{
 		db: conn,
 	}

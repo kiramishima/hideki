@@ -38,7 +38,7 @@ func (h *AuthHandlers) SignInHandler(w http.ResponseWriter, req *http.Request) {
 
 	if err != nil {
 		h.logger.Error(err.Error())
-		http.Error(w, ErrInvalidRequestBody, http.StatusBadRequest)
+		http.Error(w, httpErrors.ErrInvalidRequestBody.Error(), http.StatusBadRequest)
 		return
 	}
 	h.logger.Info(form)
@@ -50,19 +50,22 @@ func (h *AuthHandlers) SignInHandler(w http.ResponseWriter, req *http.Request) {
 
 		select {
 		case <-ctx.Done():
-			http.Error(w, ErrTimeout, http.StatusGatewayTimeout)
+			_ = h.response.JSON(w, http.StatusGatewayTimeout, httpErrors.ErrTimeout)
+			// http.Error(w, httpErrors.ErrTimeout.Error(), http.StatusGatewayTimeout)
 		default:
 			if errors.Is(err, httpErrors.ErrInvalidRequestBody) {
-				http.Error(w, ErrBadEmailOrPassword, http.StatusBadRequest)
+				_ = h.response.JSON(w, http.StatusBadRequest, httpErrors.ErrBadEmailOrPassword)
+				// http.Error(w, httpErrors.ErrBadEmailOrPassword.Error(), http.StatusBadRequest)
 			} else {
-				http.Error(w, ErrBadEmailOrPassword, http.StatusInternalServerError)
+				_ = h.response.JSON(w, http.StatusInternalServerError, httpErrors.ErrBadEmailOrPassword)
+				// http.Error(w, httpErrors.ErrBadEmailOrPassword.Error(), http.StatusInternalServerError)
 			}
 		}
 		return
 	}
-	// writeJSON(w, http.StatusAccepted, resp, nil); err != nil
+
 	if err := h.response.JSON(w, http.StatusAccepted, resp); err != nil {
-		h.logger.Error(err.Error())
+		h.logger.Error(err)
 		_ = h.response.JSON(w, http.StatusInternalServerError, map[string]string{"error": httpErrors.InternalServerError.Error()})
 		// http.Error(w, "Error", http.StatusInternalServerError)
 		return

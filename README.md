@@ -43,6 +43,7 @@ Se sigue la arquitectura hexagonal con clean architecture, pero puede ir cambian
     - handlers
     - mocks
     - server
+    - migrations
 
 La idea es aplicar algo como expuso Valentina Cupac en una platica
 
@@ -50,11 +51,11 @@ La idea es aplicar algo como expuso Valentina Cupac en una platica
 
 ## Version de Go
 
-- 1.20.6
+- 1.21
 
 ## TODO
 
-- Integrar SQLX con PGX
+- Aplicar [Uber Go Style](https://github.com/rm3l/uber-go-style-guide-fr)
 - Integrar Redis o Elasticsearch
 - Agregar Prometheus o OpenTelemetry pa' las metricas.
 - Ir a comer un ramen con los amigos(as)

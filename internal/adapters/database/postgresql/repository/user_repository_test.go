@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/assert"
 	"hideki/internal/core/domain"
 	"testing"
@@ -11,12 +12,13 @@ import (
 )
 
 func TestUserRepository_GetProfile(t *testing.T) {
-	db, mock, err := sqlmock.New()
+	db, mock, err := sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual))
 	assert.NoError(t, err)
 	defer db.Close()
-	ctx := context.Background()
+	sqlxDB := sqlx.NewDb(db, "sqlmock")
 
-	repo := NewUserRepository(db)
+	ctx := context.Background()
+	repo := NewUserRepository(sqlxDB)
 
 	user := &domain.UserProfile{
 		ID:        1,
@@ -53,8 +55,8 @@ func TestUserRepository_GetProfile(t *testing.T) {
 			WillReturnRows(rows)
 
 		userProfile, err := repo.GetProfile(ctx, user.ID)
-		t.Log("up", userProfile)
-		t.Log("err", err)
+		// t.Log("up", userProfile)
+		// t.Log("err", err)
 		assert.NoError(t, err)
 		assert.Equal(t, user, userProfile)
 

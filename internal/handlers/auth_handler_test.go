@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/unrolled/render"
 	"hideki/internal/core/domain"
 	mock "hideki/internal/mocks"
 	"log"
@@ -98,7 +99,8 @@ func TestSignInHandler(t *testing.T) {
 			router := chi.NewRouter()
 			logger, _ := zap.NewProduction()
 			slogger := logger.Sugar()
-			NewAuthHandlers(router, slogger, uc)
+			r := render.New()
+			NewAuthHandlers(router, slogger, uc, r)
 			router.ServeHTTP(recorder, request)
 			tc.checkResponse(t, recorder)
 		})
