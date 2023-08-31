@@ -37,9 +37,11 @@ func (svc *AuthService) Login(ctx context.Context, data *domain.AuthRequest) (*d
 			return nil, httpErrors.ErrTimeout
 		default:
 			if errors.Is(err, httpErrors.ErrInvalidRequestBody) {
+				return nil, httpErrors.BadQueryParams
+			} else if errors.Is(err, httpErrors.ErrUserNotFound) {
 				return nil, httpErrors.ErrBadEmailOrPassword
 			} else {
-				return nil, httpErrors.ErrBadEmailOrPassword
+				return nil, httpErrors.InternalServerError
 			}
 		}
 	}

@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/unrolled/render"
 	"hideki/config"
+	"hideki/internal/adapters/cache/redis"
 	"hideki/internal/adapters/database/postgresql/repository"
 	"hideki/internal/core/services"
 	"hideki/internal/handlers"
@@ -84,5 +85,6 @@ var Module = fx.Options(
 	repository.DatabaseModule,
 	services.Module,
 	handlers.Module,
+	redis.Module,
 	fx.Invoke(bootstrap),
 )

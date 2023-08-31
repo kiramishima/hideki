@@ -5,8 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/fx"
+	"hideki/config"
+
+	// ports "hideki/internal/core/ports/cache"
 	"time"
 )
+
+// var _ ports.ICache = (RedisCache)(nil)
 
 type RedisCache struct {
 	client *redis.Client
@@ -61,3 +67,10 @@ func (c *RedisCache) Delete(key string) error {
 	}
 	return nil
 }
+
+var Module = fx.Module("cache",
+	fx.Provide(func(cfg *config.Configuration) *RedisCache {
+		cache, _ := NewRedisCache(cfg.Addr, cfg.Password)
+		return cache
+	}),
+)

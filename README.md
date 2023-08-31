@@ -17,6 +17,7 @@ pero desde 2021 no han lanzado una versión nueva y pues Go ha cambiado.
 - SQLX
 - PGX
 - Validator
+- Redis
 
 ## Estructura
 
@@ -45,7 +46,7 @@ Se sigue la arquitectura hexagonal con clean architecture, pero puede ir cambian
     - server
     - migrations
 
-La idea es aplicar algo como expuso Valentina Cupac en una platica
+La idea es aplicar algo como expuso Valentina Cupac en su serie de [videos](https://www.youtube.com/watch?v=bKxkIjfTAnQ)
 
 <img width="750" src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe5f9ca77-0fc5-4fd4-8b89-c2e43ffff9c2_3601x4442.jpeg">
 
@@ -55,9 +56,7 @@ La idea es aplicar algo como expuso Valentina Cupac en una platica
 
 ## TODO
 
-- Aplicar [Uber Go Style](https://github.com/rm3l/uber-go-style-guide-fr)
-- Integrar Redis o Elasticsearch
+- Aplicar [Uber Go Style](https://github.com/rm3l/uber-go-style-guide-fr)Elasticsearch
 - Agregar Prometheus o OpenTelemetry pa' las metricas.
 - Ir a comer un ramen con los amigos(as)
 - Pasar mi certificación de AWS, Azure y Snowflake.
-- Agregar el video de la platica de Ms. Valentina

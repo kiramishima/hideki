@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/jmoiron/sqlx"
 	"hideki/config"
+	cache "hideki/internal/adapters/cache/redis"
 	"time"
 
 	// _ "github.com/lib/pq"
@@ -17,8 +18,8 @@ var DatabaseModule = fx.Module("db",
 	fx.Provide(func(conn *sqlx.DB) *AuthRepository {
 		return NewAuthRepository(conn)
 	}),
-	fx.Provide(func(conn *sqlx.DB) *UserRepository {
-		return NewUserRepository(conn)
+	fx.Provide(func(conn *sqlx.DB, cache *cache.RedisCache) *UserRepository {
+		return NewUserRepository(conn, cache)
 	}),
 )
 

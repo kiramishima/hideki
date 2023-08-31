@@ -44,14 +44,14 @@ func (h *UserHandlers) GetProfileHandler(w http.ResponseWriter, req *http.Reques
 		select {
 		case <-ctx.Done():
 			// http.Error(w, ErrTimeout, http.StatusGatewayTimeout)
-			_ = h.response.JSON(w, http.StatusGatewayTimeout, map[string]string{"error": httpErrors.ErrTimeout.Error()})
+			h.response.JSON(w, http.StatusGatewayTimeout, map[string]string{"error": httpErrors.ErrTimeout.Error()})
 		default:
 			if errors.Is(err, httpErrors.ErrInvalidRequestBody) {
 				// http.Error(w, ErrBadEmailOrPassword, http.StatusBadRequest)
-				_ = h.response.JSON(w, http.StatusBadRequest, map[string]string{"error": httpErrors.ErrBadEmailOrPassword.Error()})
+				h.response.JSON(w, http.StatusBadRequest, map[string]string{"error": httpErrors.ErrBadEmailOrPassword.Error()})
 			} else {
 				// http.Error(w, ErrBadEmailOrPassword, http.StatusInternalServerError)
-				_ = h.response.JSON(w, http.StatusInternalServerError, map[string]string{"error": httpErrors.ErrBadEmailOrPassword.Error()})
+				h.response.JSON(w, http.StatusInternalServerError, map[string]string{"error": httpErrors.ErrBadEmailOrPassword.Error()})
 			}
 		}
 		return

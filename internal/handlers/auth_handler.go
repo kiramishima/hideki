@@ -54,10 +54,12 @@ func (h *AuthHandlers) SignInHandler(w http.ResponseWriter, req *http.Request) {
 			// http.Error(w, httpErrors.ErrTimeout.Error(), http.StatusGatewayTimeout)
 		default:
 			if errors.Is(err, httpErrors.ErrInvalidRequestBody) {
-				_ = h.response.JSON(w, http.StatusBadRequest, httpErrors.ErrBadEmailOrPassword)
+				_ = h.response.JSON(w, http.StatusBadRequest, map[string]string{"error": httpErrors.BadQueryParams.Error()})
 				// http.Error(w, httpErrors.ErrBadEmailOrPassword.Error(), http.StatusBadRequest)
+			} else if errors.Is(err, httpErrors.ErrUserNotFound) {
+				_ = h.response.JSON(w, http.StatusBadRequest, map[string]string{"error": httpErrors.ErrBadEmailOrPassword.Error()})
 			} else {
-				_ = h.response.JSON(w, http.StatusInternalServerError, httpErrors.ErrBadEmailOrPassword)
+				_ = h.response.JSON(w, http.StatusInternalServerError, map[string]string{"error": httpErrors.InternalServerError.Error()})
 				// http.Error(w, httpErrors.ErrBadEmailOrPassword.Error(), http.StatusInternalServerError)
 			}
 		}

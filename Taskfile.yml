@@ -27,6 +27,9 @@ env:
   MAIL_USERNAME:
   MAIL_PASSWORD:
   MAIL_ENCRYPTION: tls
+  # Cache
+  CACHE_ADDR: 192.168.100.47:6379
+  CACHE_PWD:
 
 tasks:
   build:
@@ -38,8 +41,9 @@ tasks:
     cmds:
       - go test -cover -v ./... -count=1
 
-
-  run_local:
+  run:
+    deps:
+      - build
     cmds:
       - ./bin/$API_NAME
 

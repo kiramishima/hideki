@@ -11,6 +11,7 @@ import (
 type Configuration struct {
 	HTTPServer
 	Database
+	Cache
 }
 
 type HTTPServer struct {
