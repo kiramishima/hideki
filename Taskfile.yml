@@ -58,3 +58,7 @@ tasks:
   db_down:
     cmds:
       - migrate -path=./migrations -database=$(DATABASE_URL) down
+
+  linter-golangci:
+    cmds:
+      - golangci-lint run

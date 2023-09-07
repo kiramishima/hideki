@@ -6,20 +6,20 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-type AuthRequest struct {
-	Email    string `json:"email,omitempty"`
-	Password string `json:"password,omitempty"`
-	Token    string `json:"token,omitempty"`
+type RegisterRequest struct {
+	Email                string `json:"email"`
+	Password             string `json:"password"`
+	PasswordConfirmation string `json:"password_confirmation"`
 }
 
-func (u *AuthRequest) Hash256Password(password string) string {
+func (u *RegisterRequest) Hash256Password(password string) string {
 	buf := []byte(password)
 	pwd := sha3.New256()
 	pwd.Write(buf)
 	return hex.EncodeToString(pwd.Sum(nil))
 }
 
-func (u *AuthRequest) BcryptPassword(password string) (string, error) {
+func (u *RegisterRequest) BcryptPassword(password string) (string, error) {
 	buf := []byte(password)
 	hash, err := bcrypt.GenerateFromPassword(buf, bcrypt.DefaultCost)
 	if err != nil {
@@ -28,7 +28,7 @@ func (u *AuthRequest) BcryptPassword(password string) (string, error) {
 	return string(hash), nil
 }
 
-func (u *AuthRequest) ValidateBcryptPassword(password, password2 string) bool {
+func (u *RegisterRequest) ValidateBcryptPassword(password, password2 string) bool {
 	byteHash := []byte(password)
 	buf := []byte(password2)
 	err := bcrypt.CompareHashAndPassword(byteHash, buf)

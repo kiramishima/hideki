@@ -39,7 +39,7 @@ func TestLogin(t *testing.T) {
 			WithArgs(user.Email).
 			WillReturnRows(rows)
 
-		userDB, err := repo.Login(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
+		userDB, err := repo.FindByCredentials(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
 		assert.NoError(t, err)
 		assert.Equal(t, user, userDB)
 
@@ -52,7 +52,7 @@ func TestLogin(t *testing.T) {
 			WithArgs(user.Email).
 			WillReturnError(sql.ErrConnDone)
 
-		userProfile, err := repo.Login(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
+		userProfile, err := repo.FindByCredentials(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
 		assert.Error(t, err)
 		assert.Empty(t, userProfile)
 
@@ -63,7 +63,7 @@ func TestLogin(t *testing.T) {
 		mock.ExpectPrepare("SELECT id, email, password, created_at, updated_at FROM users WHERE email = ").
 			WillReturnError(sql.ErrConnDone)
 
-		userMock, err := repo.Login(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
+		userMock, err := repo.FindByCredentials(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
 		assert.Error(t, err)
 		assert.Empty(t, userMock)
 
@@ -76,7 +76,7 @@ func TestLogin(t *testing.T) {
 			WithArgs(user.Email).
 			WillReturnError(sql.ErrNoRows)
 
-		userProfile, err := repo.Login(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
+		userProfile, err := repo.FindByCredentials(ctx, &domain.AuthRequest{Email: user.Email, Password: user.Password})
 		assert.Error(t, err)
 		assert.Empty(t, userProfile)
 

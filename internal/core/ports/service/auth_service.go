@@ -6,5 +6,6 @@ import (
 )
 
 type AuthService interface {
-	Login(ctx context.Context, data *domain.AuthRequest) (*domain.AuthResponse, error)
+	FindByCredentials(ctx context.Context, data *domain.AuthRequest) (*domain.AuthResponse, error)
+	Register(ctx context.Context, registerReq *domain.RegisterRequest) error
 }

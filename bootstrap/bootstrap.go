@@ -2,7 +2,6 @@ package bootstrap
 
 import (
 	"context"
-	"errors"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/unrolled/render"
@@ -12,10 +11,6 @@ import (
 	"hideki/internal/core/services"
 	"hideki/internal/handlers"
 	"hideki/internal/server"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 
 	"go.uber.org/fx"
@@ -25,21 +20,19 @@ import (
 func bootstrap(
 	lifecycle fx.Lifecycle,
 	logger *zap.SugaredLogger,
-	server *http.Server,
+	server *server.Server,
 ) {
 	lifecycle.Append(
 		fx.Hook{
 			OnStart: func(ctx context.Context) error {
 				logger.Info("Starting API")
 
-				go func() {
+				/*go func() {
 					if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 						logger.Fatal("failed to start server")
 					}
-				}()
-
-				// graceful shutdown
-				// waitForShutdown(logger, server)
+				}()*/
+				_ = server.Run()
 
 				return nil
 			},
@@ -48,21 +41,6 @@ func bootstrap(
 			},
 		},
 	)
-}
-
-// waitForShutdown graceful shutdown
-func waitForShutdown(logger *zap.SugaredLogger, server *http.Server) {
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
-	<-sig
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	if err := server.Shutdown(ctx); err != nil {
-		logger.Fatal("Failed gracefully")
-		logger.Fatal("failed to gracefully shut down server", err)
-	}
 }
 
 var Module = fx.Options(
